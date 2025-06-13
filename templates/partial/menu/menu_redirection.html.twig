@@ -1,0 +1,29 @@
+<!-- Sidebar Menu -->
+<nav class="mt-2">
+    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <!-- Add icons to the links using the .nav-icon class
+             with font-awesome or any other icon font library -->
+        <li class="nav-item">
+            <a href="#" class="nav-link active">
+                <i class="nav-icon fas fa-laptop-house"></i>
+                <p>
+                    Espace des rôles
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            {% if app.user is not null %}
+                {% for role in app.user.roles %}
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ path('app_redirect', {'role': role|lower}) }}" class="nav-link">
+                                <i class="nav-icon fas fa-chalkboard-teacher"></i>
+                                <p>{{ role|trans }}</p>
+                            </a>
+                        </li>
+                    </ul>
+                {% endfor %}
+            {% endif %}
+        </li>
+    </ul>
+</nav>
+<!-- /.sidebar-menu -->

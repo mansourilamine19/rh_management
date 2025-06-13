@@ -1,0 +1,52 @@
+
+<span class="border-bottom pb-1">{{ form_label(form.delivery) }}</span>
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            {{ form_label(form.delivery.carRegistrationNumber) }}
+            {{ form_widget(form.delivery.carRegistrationNumber) }}
+            <div class="text-danger">
+                {{ form_errors(form.delivery.carRegistrationNumber) }}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            {{ form_label(form.delivery.cin) }}
+            {{ form_widget(form.delivery.cin) }}
+            <div class="text-danger">
+                {{ form_errors(form.delivery.cin) }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            {{ form_label(form.delivery.type) }}
+            {{ form_widget(form.delivery.type) }}
+            <div class="text-danger">
+                {{ form_errors(form.delivery.type) }}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4" id="salary">
+        <div class="form-group">
+            {{ form_label(form.delivery.salary) }}
+            {{ form_widget(form.delivery.salary) }}
+            <div class="text-danger">
+                {{ form_errors(form.delivery.salary) }}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4" id="pricePerPackage">
+        <div class="form-group">
+            {{ form_label(form.delivery.pricePerPackage) }}
+            {{ form_widget(form.delivery.pricePerPackage) }}
+            <div class="text-danger">
+                {{ form_errors(form.delivery.pricePerPackage) }}
+            </div>
+        </div>
+    </div>
+</div>

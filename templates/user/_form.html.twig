@@ -1,0 +1,88 @@
+{{ form_start(form) }}
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            {{ form_label(form.roles) }}
+            {{ form_widget(form.roles) }}
+            <div class="text-danger">
+                {{ form_errors(form.roles) }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            {{ form_label(form.fullName) }}
+            {{ form_widget(form.fullName) }}
+            <div class="text-danger"> 
+                {{ form_errors(form.fullName) }}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            {{ form_label(form.adresse) }}
+            {{ form_widget(form.adresse) }}
+            <div class="text-danger"> 
+                {{ form_errors(form.adresse) }}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            {{ form_label(form.manager) }}
+            {{ form_widget(form.manager) }}
+            <div class="text-danger"> 
+                {{ form_errors(form.manager) }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            {{ form_label(form.email) }}
+            {{ form_widget(form.email) }}
+            <div class="text-danger">
+                {{ form_errors(form.email) }}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            {{ form_label(form.password) }}
+            {{ form_widget(form.password) }}
+            <div class="text-danger">
+                {{ form_errors(form.password) }}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            {{ form_label(form.tel) }}
+            {{ form_widget(form.tel) }}
+            <div class="text-danger">
+                {{ form_errors(form.tel) }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            {{ form_label(form.cv) }}
+            {{ form_widget(form.cv) }}
+            <div class="text-danger">
+                {{ form_errors(form.cv) }}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <button class="btn btn-info">{{ button_label|default('Ajouter') }}</button>
+</div>
+{{ form_end(form) }}

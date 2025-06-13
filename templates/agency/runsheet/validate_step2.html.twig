@@ -1,0 +1,212 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+{% endblock %}
+{% block body %}
+    <!--------------------------------- START RETOUR --------------------------------->
+    {% if response.retour is defined %}
+        {% set totalPriceRetour = 0 %}
+        <table id="example2" class="table table-bordered table-hover runsheet">
+            <thead>
+                <tr>
+                    <th>N° Bordereau</th>
+                    <th>Expéditeur</th>
+                    <th>Date de création</th>
+                    <th>Montant</th>
+                    <th>Client</th>
+                    <th>Adresse</th>
+                </tr>
+            </thead>
+            {% for pick_up in response.retour %}
+                <tr {% if pick_up.attempt >=3 %} style="font-weight:bold; color: red" {% endif %}>
+                    <td>
+                        {{ pick_up.barCode }}
+                    </td>
+                    <td> {{ pick_up.createdBy.shipper.namePage }}</td>
+                    <td>{{ pick_up.createdAt|date("d/m/Y h:i") }}</td>
+                    <td> {{ pick_up.price}}</td>
+                    <td>
+                        {{ pick_up.fullName }}
+                        {{ pick_up.adresse }}
+                        {{ pick_up.tel }}
+                        {{ pick_up.tel2 }}
+                    </td>
+                    <td>
+                        {{ pick_up.locality.city.name }} / {{ pick_up.locality.city.region.name }}
+                    </td>
+                </tr>
+                {% set totalPriceRetour = totalPriceRetour + pick_up.price %}
+            {% endfor %}
+        </table>
+        <strong style="font-size: 15px;" class="text-danger fas fa-info-circle">   Nombre total des colis retour dépôt est {{ response.retour|length }}</strong><br>
+        <strong style="font-size: 20px;" class="text-danger  fas fa-info-circle">  Somme totale : {{ totalPriceRetour|number_format(3, ',', ' ') }} DT</strong>
+    {% endif %}
+    <!--------------------------------- END RETOUR --------------------------------->
+    <!--------------------------------- START VERIFIER --------------------------------->
+    {% if response.verifier is defined %}
+        {% set totalPriceVerified = 0 %}
+        <table id="example2" class="table table-bordered table-hover runsheet">
+            <thead>
+                <tr>
+                    <th>N° Bordereau</th>
+                    <th>Expéditeur</th>
+                    <th>Date de création</th>
+                    <th>Montant</th>
+                    <th>Client</th>
+                    <th>Adresse</th>
+                </tr>
+            </thead>
+            {% for pick_up in response.verifier %}
+                <tr {% if pick_up.attempt >=3 %} style="font-weight:bold; color: red" {% endif %}>
+                    <td>
+                        {{ pick_up.barCode }}
+                    </td>
+                    <td> {{ pick_up.createdBy.shipper.namePage }}</td>
+                    <td>{{ pick_up.createdAt|date("d/m/Y h:i") }}</td>
+                    <td> {{ pick_up.price}}</td>
+                    <td>
+                        {{ pick_up.fullName }}
+                        {{ pick_up.adresse }}
+                        {{ pick_up.tel }}
+                        {{ pick_up.tel2 }}
+                    </td>
+                    <td>
+                        {{ pick_up.locality.city.name }} / {{ pick_up.locality.city.region.name }}
+                    </td>
+                </tr>
+                {% set totalPriceVerified = totalPriceVerified + pick_up.price %}
+            {% endfor %}
+        </table>
+        <strong style="font-size: 15px;" class="text-danger fas fa-info-circle">   Nombre total des colis à vérifier est {{ response.verifier|length }}</strong><br>
+        <strong style="font-size: 20px;" class="text-danger  fas fa-info-circle">  Somme totale : {{ totalPriceVerified|number_format(3, ',', ' ') }} DT</strong>
+    {% endif %}
+    <!--------------------------------- END VERIFIER --------------------------------->
+    <!--------------------------------- START REFUS --------------------------------->
+    {% if response.refus is defined %}
+        {% set totalPriceRefus = 0 %}
+        <table id="example2" class="table table-bordered table-hover runsheet">
+            <thead>
+                <tr>
+                    <th>N° Bordereau</th>
+                    <th>Expéditeur</th>
+                    <th>Date de création</th>
+                    <th>Montant</th>
+                    <th>Client</th>
+                    <th>Adresse</th>
+                </tr>
+            </thead>
+            {% for pick_up in response.refus %}
+                <tr {% if pick_up.attempt >=3 %} style="font-weight:bold; color: red" {% endif %}>
+                    <td>
+                        {{ pick_up.barCode }}
+                    </td>
+                    <td> {{ pick_up.createdBy.shipper.namePage }}</td>
+                    <td>{{ pick_up.createdAt|date("d/m/Y h:i") }}</td>
+                    <td> {{ pick_up.price}}</td>
+                    <td>
+                        {{ pick_up.fullName }}
+                        {{ pick_up.adresse }}
+                        {{ pick_up.tel }}
+                        {{ pick_up.tel2 }}
+                    </td>
+                    <td>
+                        {{ pick_up.locality.city.name }} / {{ pick_up.locality.city.region.name }}
+                    </td>
+                </tr>
+                {% set totalPriceRetour = totalPriceRetour + pick_up.price %}
+            {% endfor %}
+        </table>
+        <strong style="font-size: 15px;" class="text-danger fas fa-info-circle">   Nombre total des colis retour dépôt est {{ response.refus|length }}</strong><br>
+        <strong style="font-size: 20px;" class="text-danger  fas fa-info-circle">  Somme totale : {{ totalPriceRefus|number_format(3, ',', ' ') }} DT</strong>
+    {% endif %}
+    <!--------------------------------- START LIVRED --------------------------------->
+    {% if response.livred is defined %}
+        {% set totalPriceLivred = 0 %}
+        <table id="example2" class="table table-bordered table-hover runsheet">
+            <thead>
+                <tr>
+                    <th>N° Bordereau</th>
+                    <th>Expéditeur</th>
+                    <th>Date de création</th>
+                    <th>Montant</th>
+                    <th>Client</th>
+                    <th>Adresse</th>
+                </tr>
+            </thead>
+            {% for pick_up in response.livred %}
+                <tr {% if pick_up.attempt >=3 %} style="font-weight:bold; color: red" {% endif %}>
+                    <td>
+                        {{ pick_up.barCode }}
+                    </td>
+                    <td> {{ pick_up.createdBy.shipper.namePage }}</td>
+                    <td>{{ pick_up.createdAt|date("d/m/Y h:i") }}</td>
+                    <td> {{ pick_up.price}}</td>
+                    <td>
+                        {{ pick_up.fullName }}
+                        {{ pick_up.adresse }}
+                        {{ pick_up.tel }}
+                        {{ pick_up.tel2 }}
+                    </td>
+                    <td>
+                        {{ pick_up.locality.city.name }} / {{ pick_up.locality.city.region.name }}
+                    </td>
+                </tr>
+                {% set totalPriceLivred = totalPriceLivred + pick_up.price %}
+            {% endfor %}
+        </table>
+        <div class="row justify-content-center">
+            <strong style="font-size: 15px;" class="text-primary fas fa-info-circle">   Nombre total des colis livré est {{ response.livred|length }}</strong><br>
+        </div>
+        <div class="row justify-content-center">
+            <strong style="font-size: 20px;" class="text-primary  fas fa-info-circle">  Somme totale : {{ totalPriceLivred|number_format(3, ',', ' ') }} DT</strong>
+        </div>
+    {% endif %}
+    <!--------------------------------- END LIVRED --------------------------------->
+    <br>
+    <br>
+    <div class="row justify-content-center">
+        <a onclick="return confirm('Êtes-vous sûr de vouloir valider le runsheet ?');" class="btn btn-success btn-lg" href="{{ path('app_runsheet_validate_step3', {'id': runsheet.id}) }}">Valider</a>&nbsp;&nbsp;&nbsp;
+        <a onclick="return confirm('Êtes-vous sûr de vouloir annuler le runsheet ?');" class="btn btn-warning btn-lg" href="{{ path('app_runsheet_reset', {'id': runsheet.id}) }}">Annuler</a>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <!-- DataTables -->
+    <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.j') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+
+    <!-- Page specific script -->
+    <script>
+            $(document).ready(function () {
+                $(".runsheet").DataTable({
+                    "paging": false,
+                    "lengthChange": true,
+                    "searching": false,
+                    "ordering": true,
+                    "info": false,
+                    "autoWidth": false,
+                    "responsive": true,
+                    "columnDefs": [
+                        //hide the second & fourth column
+                        {"visible": true, "targets": [0]}
+                    ],
+                    "order": [[0, 'desc']]
+                });
+            });
+
+
+    </script>
+{% endblock %}

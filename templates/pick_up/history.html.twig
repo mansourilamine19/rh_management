@@ -1,0 +1,106 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+{% endblock %}
+
+
+{% block body %}
+    <div class="text-center text-danger font-weight-bold fs-1"> <h1> <strong> {{ items.0.barCode }} </strong> </h1></div>
+    <table id="table_history_pick_up" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Désignation</th>
+                <th>Agence expédition</th>
+                <th>Agence destination</th>
+                <th>Infos client</th>
+                <th>Prix</th>
+                <th>Status colis</th>
+                <th>Date création</th>
+                <th>Date modification</th>
+                <th>Modifier par</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pick_up in items %}
+                <tr>
+                    <td>{{ pick_up.id }}</td>
+                    <td>{{ pick_up.designation }}</td>
+                    <td>{{ pick_up.agencyPickUp.name }}</td>
+                    <td>{{ pick_up.agencyDestination.name }}</td>
+                    <td>
+                        <strong>{{ pick_up.fullName }}</strong> <br> 
+                        {{ pick_up.tel }}***{{ pick_up.tel2 }} <br>
+                        {{ pick_up.adresse }} {{ pick_up.locality.name }} : {{ pick_up.locality.city.name }}: {{ pick_up.locality.city.region.name }}
+                    </td>
+                    <td>{{ pick_up.price }}</td>
+                    <td>
+                        {% if 'RETURN' in pick_up.status %}
+                            <button type="button" class="btn btn-danger btn-xs">{{ pick_up.status|trans }}</button>
+                        {% else %}
+                            <button type="button" class="btn btn-info btn-xs">{{ pick_up.status|trans }}</button>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if pick_up.createdAt is not null %}
+                            {{ pick_up.createdAt|date("d/m/Y h:i") }} </td>
+                        {% endif %}
+                    <td>
+                        {% if pick_up.updatedAt is not null %}
+                            {{ pick_up.updatedAt|date("d/m/Y h:i") }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if pick_up.updatedBy is not null %}
+                            {{ pick_up.updatedBy.fullName }}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="10">no records found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <!-- DataTables -->
+    <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.j') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+
+    <!-- Page specific script -->
+    <script>
+        $(document).ready(function () {
+            $.fn.dataTable.ext.errMode = 'throw';
+            $("#table_history_pick_up").DataTable({
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": true,
+                "responsive": true,
+                "columnDefs": [
+                    //hide the second & fourth column
+                    {"visible": false, "targets": [0]}
+                ],
+                "order": [[0, 'desc']]
+            });
+        });
+    </script>
+{% endblock %}

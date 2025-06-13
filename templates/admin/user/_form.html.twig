@@ -1,0 +1,87 @@
+{% for message in app.flashes('success') %}
+    <div class="alert alert-success text-center">
+        {{ message }}
+    </div>
+{% endfor %}
+
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            {{ form_label(form.roles) }}
+            {{ form_widget(form.roles) }}
+            <div class="text-danger">
+                {{ form_errors(form.roles) }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            {{ form_label(form.fullName) }}
+            {{ form_widget(form.fullName) }}
+            <div class="text-danger"> 
+                {{ form_errors(form.fullName) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="form-group">
+            {{ form_label(form.agency) }}
+            {{ form_widget(form.agency) }}
+            <div class="text-danger">
+                {{ form_errors(form.agency) }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            {{ form_label(form.email) }}
+            {{ form_widget(form.email) }}
+            <div class="text-danger">
+                {{ form_errors(form.email) }}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            {{ form_label(form.password) }}
+            {{ form_widget(form.password) }}
+            <div class="text-danger">
+                {{ form_errors(form.password) }}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            {{ form_label(form.tel) }}
+            {{ form_widget(form.tel) }}
+            <div class="text-danger">
+                {{ form_errors(form.tel) }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content" id="shipper_form">
+    {{ include('partial/user/shipper.html.twig') }}
+</div>
+
+<div class="content" id="delivery_form">
+    {{ include('partial/user/delivery.html.twig') }}
+</div>
+
+<div class="content" id="employee_form">
+    {{ include('partial/user/employee.html.twig') }}
+</div>
+
+<div class="row justify-content-center">
+    <button class="btn btn-info">{{ button_label|default('Ajouter') }}</button>
+</div>
+{{ form_end(form) }}

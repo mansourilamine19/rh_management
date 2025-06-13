@@ -1,0 +1,57 @@
+<div class="card-body">
+    <table id="example2" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Expéditeur</th>
+                <th>Total</th>
+                <th>Crédit</th>
+                <th>Livré</th> 
+                <th>Retour</th>
+                <th>NAVEX</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for recipe in items %}
+                <tr>
+                    <td><input type="checkbox" name="barCode[]" value="{{ recipe.id }}" id="pick_up_{{ recipe.id }}"></td>
+                    <td style="width:50%; height: 10% !important">
+                        <strong>{{ recipe.shipper.fullName }}<hr>
+                            {{ recipe.shipper.shipper.namePage }}<hr></strong>
+                        <button type="button" class="btn btn-info btn-xs">{{ recipe.shipper.shipper.paymentMethod }}</button><hr>
+                        <button type="button" class="btn btn-info btn-xs">{{ recipe.shipper.agency.name }}</button>
+                    </td>
+                    <td>
+                        {{ recipe.totalNumberPickUp }}<br>
+                        {{ recipe.totalPrice }}<br>
+                    </td>
+                    <td>------</td>
+                    <td>
+                        {{ recipe.totalNumberPickUpDelivred }}<br>
+                        {{ recipe.totalDeliveryFee }}<br>
+                    </td>
+                    <td>
+                        {{ recipe.totalNumberPickUpReturn }}<br>
+                        {{ recipe.commission }}<br>
+                    </td>
+                    <td>---NAVEX ???---</td>
+                    <td>{{ recipe.billingDate|date("d/m/Y") }}</td>
+                    <td>
+                        <button type="button" class="btn btn-success btn-xs">{{ recipe.status|trans }}</button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-success btn-xs">ACTIONS</button>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="10">no records found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {{ include('partial/pagination.html.twig') }}
+</div>

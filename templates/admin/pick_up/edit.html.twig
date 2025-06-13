@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {{ include('shipper/pick_up/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <input type="hidden" name="region_id" id="region_id" value="{{ region_id }}">
+    <input type="hidden" name="city_id" id="city_id" value="{{ city_id }}">
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+
+        var region_id = $('#region_id').val();
+        var city_id = $('#city_id').val();
+        $(`#city_region option[value='${region_id}']`).prop('selected', true);
+        $(`#city_name option[value='${city_id}']`).prop('selected', true);
+
+        $("#city_region").change(function () {
+            var id = $("#city_region").val();
+            $.ajax({
+                type: 'GET',
+                url: "{{ path('app_city_list') }}",
+                data: {id: id},
+                dataType: 'html',
+                success: function (data) {
+                    //Handle your JSON data to update the DOM
+                    $("#city_name").empty();
+                    $("#pick_up_locality").empty();
+                    $("#city_name").append(data);
+                }
+            });
+        });
+
+        $("#city_name").change(function () {
+            var id = $("#city_name").val();
+            $.ajax({
+                type: 'GET',
+                url: "{{ path('app_locality_list') }}",
+                data: {id: id},
+                dataType: 'html',
+                success: function (data) {
+                    //Handle your JSON data to update the DOM
+                    $("#pick_up_locality").empty();
+                    $("#pick_up_locality").append(data);
+                }
+            });
+        });
+
+    </script>
+{% endblock %}

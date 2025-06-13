@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+    <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/css/dataTables.checkboxes.css" rel="stylesheet" />
+    <style>
+        table.dataTable > tbody > tr:nth-child(even of :not(.child)) > td,
+        table.dataTable > tbody > tr:nth-child(even of :not(.child)) + .child > td {
+            background-color: #f9f9f9;
+        }
+
+
+        table.dataTable > tbody > tr:nth-child(odd of :not(.child)) > td,
+        table.dataTable > tbody > tr:nth-child(odd of :not(.child)) + .child > td {
+            background-color: #eee;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+    <div id="list_recipe">
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <!-- DataTables -->
+    <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.j') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+    <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/js/dataTables.checkboxes.min.js"></script>
+    <!-- Page specific script -->
+    <script>
+        $(document).ready(function () {
+            searchAjax(page = 1);
+        });
+        function searchAjax(page = 1) {
+            var date = $("#date").val();
+            $.fn.dataTable.ext.errMode = 'throw';
+            $.ajax({
+                type: 'GET',
+                url: "{{ path('app_financial_recipe_search') }}",
+                data: {
+                    page: page,
+                    date: date
+                },
+                dataType: 'html',
+                beforeSend: function () {
+                    $("#loading").show();
+                    $("#list_recipe").html("");
+                },
+                success: function (data) {
+                    //Handle your JSON data to update the DOM
+                    $("#loading").hide();
+                    $("#list_recipe").append(data);
+                    $("#example2").DataTable({
+                        "paging": false,
+                        "lengthChange": true,
+                        "searching": false,
+                        "ordering": true,
+                        "info": false,
+                        "autoWidth": false,
+                        "responsive": true,
+                        "order": [[0, 'desc']]
+                    });
+                    // Handle click on "Select all" control
+                    $('#example-select-all').on('click', function () {
+                        var table = $('#example2').DataTable();
+                        // Check/uncheck all checkboxes in the table
+                        var rows = table.rows({'search': 'applied'}).nodes();
+                        $('input[type="checkbox"]', rows).prop('checked', this.checked);
+                    });
+                },
+                error: function (xhr) { // if error occured
+                    $("#loading").hide();
+                }
+            });
+        }
+    </script>
+{% endblock %}

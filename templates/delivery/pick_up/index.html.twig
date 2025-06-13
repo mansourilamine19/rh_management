@@ -1,0 +1,159 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="card-body">
+        <table id="example2" class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th></th>
+                    <th>Code à barre</th>
+                    <th>Désignation</th>
+                    <th>Agence expédition</th>
+                    <th>Agence destination</th>
+                    <th>Infos client</th>
+                    <th>Prix</th>
+                    <th>Réponse livreur</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pick_up in items %}
+                    <tr id="line_{{ pick_up.barCode }}" {% if pick_up.updatedBy.id == app.user.id %} style="background-color:green;"  {% endif %}>
+                        <td>{{ pick_up.id }}</td>
+                        {#<td><input type="checkbox" name="barCode[]" value="{{ pick_up.barCode }}" id="pick_up_{{ pick_up.barCode }}"></td>#}
+                        <td><button type="button" class="btn btn-primary fas fa-edit nav-icon"  onClick="showResponse({{ pick_up.id }}, {{ pick_up.barCode }});"></button></td>
+                        <td>{{ pick_up.barCode }}</td>
+                        <td>{{ pick_up.designation }}</td>
+                        <td>{{ pick_up.agencyPickUp.name }}</td>
+                        <td>{{ pick_up.agencyDestination.name }}</td>
+                        <td>
+                            <strong>{{ pick_up.fullName }}</strong> <br> 
+                            {{ pick_up.tel }}***{{ pick_up.tel2 }} <br>
+                            {{ pick_up.adresse }} {{ pick_up.locality.name }} : {{ pick_up.locality.city.name }}: {{ pick_up.locality.city.region.name }}
+                        </td>
+                        <td>{{ pick_up.price }}</td>
+                        <td>
+                            <button id="delivery_response_{{ pick_up.barCode }}" type="button" class="btn btn-danger btn-xs">{{ pick_up.deliveryResponse|trans }}</button>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="10">no records found</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Large modal -->
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="myLargeModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle"> Réponse livreur </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {% for key, item in deliveryResponse %}
+                        <div class="icheck-success form-check">
+                            <input type="radio" name="deliveryResponse" checked id="radioSuccess3_{{ key }}" value="{{ key }}">
+                            <label class="form-check-label" for="radioSuccess3_{{ key }}">
+                                <strong> - {{ item }} </strong>
+                            </label>
+                        </div>
+                    {% endfor %}
+                </div>
+                <input type="hidden" name="barCode" vaue="" id="barCode">
+                <input type="hidden" name="id" vaue="" id="id">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary" id="enregistrer">Enregistrer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <!-- DataTables -->
+    <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.j') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+    <!-- Page specific script -->
+    <script>
+                            $(document).ready(function () {
+                                $("#example1").DataTable({
+                                    "responsive": true, "lengthChange": false, "autoWidth": false,
+                                    "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+                                }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+                                $('#example2').DataTable({
+                                    "paging": true,
+                                    "lengthChange": false,
+                                    "searching": true,
+                                    "ordering": true,
+                                    "info": true,
+                                    "autoWidth": true,
+                                    "responsive": true,
+                                    "columnDefs": [
+                                        //hide the second & fourth column
+                                        {"visible": false, "targets": [0]}
+                                    ],
+                                    "order": [[0, 'desc']]
+                                });
+                            });
+
+                            $('#enregistrer').click(function () {
+                                var deliveryResponse = $('input[name="deliveryResponse"]:checked').val();
+                                if (confirm("Voulez vous modifier l'état de colis ???")) {
+                                    $.ajax({
+                                        type: 'GET',
+                                        url: "{{ path('app_delivery_pick_up_response') }}",
+                                        data: {
+                                            id: $("#id").val(),
+                                            barCode: $("#barCode").val(),
+                                            deliveryResponse: deliveryResponse,
+                                        },
+                                        dataType: 'html',
+                                        beforeSend: function () {
+                                            $("#loading").show();
+                                        },
+                                        success: function (data) {
+                                            var response = jQuery.parseJSON(data);
+                                            $("#loading").hide();
+                                            $('#myLargeModal').modal('toggle');
+                                            $("#line_" + response.barCode).css({'background-color': 'green'});
+                                            $("#delivery_response_" + response.barCode).text("");
+                                            $("#delivery_response_" + response.barCode).text(response.deliveryResponse);
+                                        },
+                                        error: function (xhr) { // if error occured
+                                            $("#loading").hide();
+                                            $('#myLargeModal').modal('toggle');
+                                        }
+                                    });
+                                }
+                            });
+                            function showResponse(id, barCode) {
+                                $('#myLargeModal').modal('show');
+                                $('#exampleModalLongTitle').text('Réponse livreur: colis avec le code à barre ' + barCode);
+                                $('#id').val(id);
+                                $('#barCode').val(barCode);
+                            }
+    </script>
+{% endblock %}

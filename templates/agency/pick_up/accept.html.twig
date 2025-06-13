@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <form action="{{ path('app_agency_pick_up_accept') }}" method="post">
+            <div class="row justify-content-center">
+                <div class="col-md-10">
+                    <label  class="form-label">Liste des codes à barres</label>
+                    <textarea oninput="
+                              $(this).val(function(_, val) {
+                              const lines = val
+                              .replace(/[^\d\r\n]/g, '')
+                              .split(/\r?\n/)
+                              .map(line => line.slice(0, 12));
+                              const unique = [...new Set(lines)];
+                              return unique.join('\n');
+                              });
+                              "
+                              class="form-control" id="barCodes" name="barCodes" rows="10"></textarea>
+                </div>
+                <div class="col-md-2"> 
+                    <div id="number_pick_up" class="text-red" style="font-size: 10rem;">0</div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-info">Accepter à l'entrepôt</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $("#barCodes").on('keyup', function (event) {
+            var barCodes = $("#barCodes").val();
+            console.log(barCodes);
+            console.log(barCodes.length);
+            var numberPickUps = barCodes.replace(/\D/g, "").length / 12;
+            $("#number_pick_up").text(Math.floor(numberPickUps));
+        });
+    </script>
+{% endblock %}

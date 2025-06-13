@@ -1,0 +1,10 @@
+## YAML Template.
+ROLE_SUPER_ADMIN: "Super administrateur"
+ROLE_ADMIN: "Administrateur"
+ROLE_RH: "Resource humaine"
+USER_IN_MISSION: "En mission"
+USER_IN_INTER_CONTRACT: "En inter contrat"
+CONTRACT_CDI: "CDI"
+CONTRACT_CDD: "CDD"
+CONTRACT_STAGE: "STAGE"
+CONTRACT_FORMATION: "FORMATEUR"

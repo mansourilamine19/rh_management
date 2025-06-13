@@ -1,0 +1,180 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+    <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/css/dataTables.checkboxes.css" rel="stylesheet" />
+    <style>
+        body {
+            background: rgb(204,204,204);
+        }
+        page[size="A4"] {
+            background: white;
+            width: 21cm;
+            height: 29.7cm;
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 0.5cm;
+            box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+        }
+        @media print {
+            body, page[size="A4"] {
+                margin: 0;
+                box-shadow: 0;
+                size:A4;
+            }
+        }
+        @media print {
+            @page {
+                size: A4;
+            }
+        }
+    </style>
+{% endblock %}
+
+
+{% block body %}
+
+    {{ include('partial/flash_message.html.twig') }}
+
+    <div class="card-body">
+        <div class="row">
+            {#            <div class="col-md-3">
+                        </div> 
+                        <div class="col-md-3">
+                        </div> #}
+            <div class="col-md-6">
+                <div class="input-group" data-widget="sidebar-search">
+                    <input class="form-control form-control-sidebar" id="search" name="search" type="text" placeholder="Recherche" aria-label="Search">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <select class="form-control" id="status" name="status" placeholder="Status commande">
+                    <option value="">Status commande</option>
+                    {% for key,value in list_status%}
+                        <option value="{{ key }}">{{ value }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-info" onclick="searchAjax()">Recherche</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card-body">
+        <div id="list_pick_up">
+        </div>
+    </div>
+
+    {#    <div id="print_etiquette">
+        </div>
+    
+        <div id="info"></div>
+    
+    
+    
+        <svg id="barcode"></svg>#}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <!-- DataTables -->
+    <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.j') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+    <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/js/dataTables.checkboxes.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.3/JsBarcode.all.min.js"></script>
+
+    <!-- Page specific script -->
+    <script>
+
+                    $(document).ready(function () {
+                        searchAjax(page = 1);
+                    });
+
+                    function searchAjax(page = 1) {
+                        var search = $("#search").val();
+                        var status = $("#status").val();
+                        $.fn.dataTable.ext.errMode = 'throw';
+                        $.ajax({
+                            type: 'GET',
+                            url: "{{ path('app_pick_up_search') }}",
+                            data: {
+                                page: page,
+                                status: status,
+                                search: search
+                            },
+                            dataType: 'html',
+                            beforeSend: function () {
+                                $("#loading").show();
+                                $("#list_pick_up").html("");
+                            },
+                            success: function (data) {
+                                //Handle your JSON data to update the DOM
+                                $("#loading").hide();
+                                $("#list_pick_up").append(data);
+                                JsBarcode(".barcode").init();
+                                $("#example2").DataTable({
+                                    "paging": false,
+                                    "lengthChange": true,
+                                    "searching": false,
+                                    "ordering": true,
+                                    "info": false,
+                                    "autoWidth": false,
+                                    "responsive": true,
+                                    "columnDefs": [
+                                        //hide the second & fourth column
+                                        {"visible": false, "targets": [0]}
+                                    ],
+                                    "order": [[0, 'desc']]
+                                });
+                                // Handle click on "Select all" control
+                                $('#example-select-all').on('click', function () {
+                                    var table = $('#example2').DataTable();
+                                    // Check/uncheck all checkboxes in the table
+                                    var rows = table.rows({'search': 'applied'}).nodes();
+                                    $('input[type="checkbox"]', rows).prop('checked', this.checked);
+                                });
+                            },
+                            error: function (xhr) { // if error occured
+                                $("#loading").hide();
+                            }
+                        });
+                    }
+
+                    function printEtiquette()
+                    {
+                        var table = $('#example2').DataTable();
+                        var print_etiquette = $("#print_etiquette").html("");
+                        $(table.$('input[name="barCode[]"]:checked').each(function (index, value) {
+                            var etiquette = document.getElementById("etiquette_to_print_" + $(this).val());
+                            $("#print_etiquette").append(etiquette);
+                            console.log(index);
+                        }));
+
+                        var divToPrint = document.getElementById("print_etiquette");
+                        console.log(divToPrint);
+                        newWin = window.open("");
+                        newWin.document.write(divToPrint.outerHTML);
+                        newWin.print();
+                        newWin.close();
+                        window.location.reload();
+
+                    }
+
+
+    </script>
+{% endblock %}

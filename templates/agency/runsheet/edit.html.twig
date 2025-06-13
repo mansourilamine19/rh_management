@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                {{ form_label(form.delivery) }}
+                {{ form_widget(form.delivery) }}
+                <div class="text-danger">
+                    {{ form_errors(form.delivery) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                {{ form_label(form.km) }}
+                {{ form_widget(form.km) }}
+                <div class="text-danger">
+                    {{ form_errors(form.km) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <label  class="form-label">Liste des codes à barres</label>
+            <textarea required="required" oninput="
+                      $(this).val(function(_, val) {
+                      const lines = val
+                      .replace(/[^\d\r\n]/g, '')
+                      .split(/\r?\n/)
+                      .map(line => line.slice(0, 12));
+                      const unique = [...new Set(lines)];
+                      return unique.join('\n');
+                      });
+                      "
+                      class="form-control" id="barCodes" name="barCodes" rows="10">{% for pickUp in runsheet.pickUps %}{{ pickUp.barCode~"\n" }}{% endfor %}</textarea>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-info">Ajouter runsheet</button>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
