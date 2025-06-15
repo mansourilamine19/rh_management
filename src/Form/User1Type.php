@@ -19,6 +19,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 
 class User1Type extends AbstractType {
 
@@ -45,7 +47,7 @@ class User1Type extends AbstractType {
                     'required' => true,
                         )
                 )
-                ->add('password', PasswordType::class, [
+                ->remove('password', PasswordType::class, [
                     'label' => 'Mot de passe',
                     'required' => true,
                     'attr' => array(
@@ -80,18 +82,27 @@ class User1Type extends AbstractType {
                 ])
                 ->add('cv', FileType::class, [
                     'label' => 'CV',
-                    'required' => true,
+                    'required' => false,
                     'attr' => array(
                         'class' => 'form-control',
-                        'required' => true,
+                        'required' => false,
                     )
                 ])
                 ->remove('status')
                 ->add('manager', EntityType::class, [
                     'class' => User::class,
-                    'choice_label' => 'fullName',
+                    'label' => 'Manager',
+                    'query_builder' => function (EntityRepository $er): QueryBuilder {
+                        return $er->createQueryBuilder('u')
+                                ->where('u.roles LIKE :role')
+                                ->setParameter('role', '%ROLE_MANAGER%')
+                                ->orderBy('u.fullName', 'ASC');
+                    },
+                    'required' => false,
+                    'placeholder' => '-----',
+                    'empty_data' => null,
                     'attr' => array(
-                        'class' => 'form-control',
+                        'class' => 'form-control select2',
                         'required' => false,
                     )
                 ])

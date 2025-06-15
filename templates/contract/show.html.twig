@@ -9,11 +9,44 @@
 {% endblock %}
 
 {% block body %}
-    {{ include('admin/agency/_form.html.twig') }}
 
-    {{ render(controller(
-        'App\\Controller\\Admin\\AgencyController::index'
-    )) }}
+    <table id="example2" class="table table-bordered table-hover">
+        <tbody>
+            <tr>
+                <th>Collaborateur</th>
+                <td>{{ contract.user.fullName }}</td>
+            </tr>
+            <tr>
+                <th>Titre</th>
+                <td>{{ contract.title }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ contract.type | trans }}</td>
+            </tr>
+            <tr>
+                <th>Date de début</th>
+                <td>
+                    {% if contract.startDate is not empty  %}
+                        {{ contract.startDate|date('Y-m-d') }}
+                    {% endif %}
+
+                </td>
+            </tr>
+            <tr>
+                <th>date de fin</th>
+                <td>
+                    {% if contract.endDate is not empty  %}
+                        {{ contract.endDate|date('Y-m-d') }}
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Salaire</th>
+                <td>{{ contract.salary }}</td>
+            </tr>
+        </tbody>
+    </table>
 {% endblock %}
 
 {% block javascripts %}
@@ -37,11 +70,11 @@
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({
                 "paging": true,
-                "lengthChange": false,
-                "searching": false,
+                "lengthChange": true,
+                "searching": true,
                 "ordering": true,
                 "info": true,
-                "autoWidth": false,
+                "autoWidth": true,
                 "responsive": true,
             });
         });

@@ -79,9 +79,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
     #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'manager')]
     private Collection $users;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?Contract $contract = null;
-
     /**
      * @var Collection<int, Evaluation>
      */
@@ -277,16 +274,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface {
                 $user->setManager(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getContract(): ?Contract {
-        return $this->contract;
-    }
-
-    public function setContract(?Contract $contract): static {
-        $this->contract = $contract;
 
         return $this;
     }
