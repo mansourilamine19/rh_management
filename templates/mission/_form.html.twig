@@ -1,0 +1,65 @@
+{{ form_start(form) }}
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            {{ form_label(form.user) }}
+            {{ form_widget(form.user) }}
+            <div class="text-danger">
+                {{ form_errors(form.user) }}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name) }}
+            <div class="text-danger">
+                {{ form_errors(form.name) }}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            {{ form_label(form.client) }}
+            {{ form_widget(form.client) }}
+            <div class="text-danger">
+                {{ form_errors(form.client) }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            {{ form_label(form.startDate) }}
+            {{ form_widget(form.startDate) }}
+            <div class="text-danger">
+                {{ form_errors(form.startDate) }}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            {{ form_label(form.endDate) }}
+            {{ form_widget(form.endDate) }}
+            <div class="text-danger">
+                {{ form_errors(form.endDate) }}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            {{ form_label(form.tjm) }}
+            {{ form_widget(form.tjm) }}
+            <div class="text-danger">
+                {{ form_errors(form.tjm) }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <button class="btn btn-info">{{ button_label|default('Ajouter') }}</button>
+</div>
+{{ form_end(form) }}
