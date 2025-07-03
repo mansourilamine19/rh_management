@@ -1,0 +1,6 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    
+    {{ include('skill/_form.html.twig', {'button_label': 'Ajouter'}) }}
+    <a href="{{ path('app_skill_index') }}">Retour à la liste</a>
+{% endblock %}
