@@ -1,0 +1,47 @@
+{{ form_start(form) }}
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            {{ form_label(form.user) }}
+            {{ form_widget(form.user) }}
+            <div class="text-danger">
+                {{ form_errors(form.user) }}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            {{ form_label(form.evaluateBy) }}
+            {{ form_widget(form.evaluateBy) }}
+            <div class="text-danger">
+                {{ form_errors(form.evaluateBy) }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            {{ form_label(form.note) }}
+            {{ form_widget(form.note) }}
+            <div class="text-danger">
+                {{ form_errors(form.note) }}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            {{ form_label(form.comment) }}
+            {{ form_widget(form.comment) }}
+            <div class="text-danger">
+                {{ form_errors(form.comment) }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <button class="btn btn-info">{{ button_label|default('Ajouter') }}</button>
+</div>
+{{ form_end(form) }}

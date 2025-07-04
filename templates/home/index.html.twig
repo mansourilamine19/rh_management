@@ -1,8 +1,66 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+  <div class="container py-4">
 
-    <h1> HOME PAGE </h1>
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-md-3">
+        <div class="card text-white bg-primary">
+          <div class="card-body">
+            <h5 class="card-title">Employés</h5>
+            <p class="card-text display-6">{{ nb_employes }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card text-white bg-success">
+          <div class="card-body">
+            <h5 class="card-title">Contrats</h5>
+            <p class="card-text display-6">{{ nb_contrats }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card text-white bg-warning">
+          <div class="card-body">
+            <h5 class="card-title">Missions</h5>
+            <p class="card-text display-6">{{ nb_missions }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card text-white bg-info">
+          <div class="card-body">
+            <h5 class="card-title">Régions</h5>
+            <p class="card-text display-6">{{ nb_regions }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
 
+    <div class="mt-5">
+      <h5>Liste des évaluations</h5>
+      <table class="table table-striped mt-3">
+        <thead>
+          <tr>
+            <th>Collaborator</th>
+            <th>Note</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for evaluation in evaluations %}
+            <tr>
+              <td>{{ evaluation.user.fullName }}</td>
+              <td>{{ evaluation.note }}</td>
+            </tr>
+          {% else %}
+            <tr>
+              <td colspan="2">Aucune évaluation trouvée.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+  </div>
 {% endblock %}
-

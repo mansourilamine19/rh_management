@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+{% block title %}Détail de l'évaluation{% endblock %}
+{% block body %}
+<table class="table table-bordered">
+    <tbody>
+        <tr><th>ID</th><td>{{ evaluation.id }}</td></tr>
+        <tr><th>Collaborateur</th><td>{{ evaluation.user.fullName }}</td></tr>
+        <tr><th>Note</th><td>{{ evaluation.note }}</td></tr>
+        <tr><th>Commentaire</th><td>{{ evaluation.comment }}</td></tr>
+    </tbody>
+</table>
+{% endblock %}
