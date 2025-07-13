@@ -36,7 +36,7 @@
                     </td>
                     <td>{{ user.tel }}</td>
                     <td>{{ user.adresse }}</td>
-                    <td>{{ user.status }}</td>
+                    <td>{{ user.status|trans }}</td>
                     <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                     <td class="project-actions text-inline">
                         <a class="btn btn-primary btn-sm" href="{{ path('app_user_show', {'id': user.id}) }}">

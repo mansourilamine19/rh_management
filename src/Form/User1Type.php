@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use App\Enum\RoleUserEnum;
+use App\Enum\TypeContractEnum;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Form\FormEvent;
@@ -89,7 +90,19 @@ class User1Type extends AbstractType {
                         'required' => false,
                     )
                 ])
-                ->remove('status')
+                ->add('status', ChoiceType::class, array(
+                    'label' => 'Status',
+                    'attr' => array(
+                        'class' => 'form-control select2',
+                        'id' => 'status_selected',
+                        'required' => true,
+                    ),
+                    'choices' =>
+                    array_column(TypeContractEnum::cases(), 'name', 'value'),
+                    'multiple' => false,
+                    'required' => false,
+                        )
+                )
                 ->add('manager', EntityType::class, [
                     'class' => User::class,
                     'label' => 'Manager',
