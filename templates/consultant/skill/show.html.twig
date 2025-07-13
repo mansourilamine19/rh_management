@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    
+    <table class="table">
+        <tr><th>ID</th><td>{{ skill.id }}</td></tr>
+        <tr><th>Nom</th><td>{{ skill.name }}</td></tr>
+        <tr><th>Niveau</th><td>{{ skill.level }}</td></tr>
+        <tr><th>Collaborateur</th><td>{{ skill.user.fullName }}</td></tr>
+    </table>
+    <a href="{{ path('app_skill_index') }}">Retour</a>
+
+{% endblock %}

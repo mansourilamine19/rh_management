@@ -81,6 +81,7 @@ class User1Type extends AbstractType {
                     )
                 ])
                 ->add('cv', FileType::class, [
+                    'data_class' => null,
                     'label' => 'CV',
                     'required' => false,
                     'attr' => array(

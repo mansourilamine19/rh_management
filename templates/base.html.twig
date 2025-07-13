@@ -61,7 +61,7 @@
                         <a href="{{ path('app_home') }}" class="nav-link">Home</a>
                     </li>
 
-                    
+
                 </ul>
 
                 <!-- Right navbar links -->
@@ -90,11 +90,11 @@
 
                     <!-- Messages Dropdown Menu -->
                     <li class="nav-item dropdown">
-                        
+
                     </li>
                     <!-- Notifications Dropdown Menu -->
-                    
-                  
+
+
                     <li class="nav-item">
                         <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                             <i class="fas fa-expand-arrows-alt"></i>
@@ -142,46 +142,70 @@
                                         <i class="right fas fa-angle-left"></i>
                                     </p>
                                 </a>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="{{ path('app_user_index') }}" class="nav-link">
-                                            <i class="far fa-circle nav-icon fa fa-users"></i>
-                                            <p>Compte</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="{{ path('app_contract_index') }}" class="nav-link">
-                                            <i class="fas fa-file-signature nav-icon"></i>
-                                            <p>Contrat</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="{{ path('app_mission_index') }}" class="nav-link">
-                                            <i class="fas fa-briefcase nav-icon"></i>
-                                            <p>Mission</p>
-                                        </a>
-                                    </li>
-                                </ul> 
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="{{ path('app_evaluation_index') }}" class="nav-link">
-                                            <i class="fas fa-check-circle nav-icon"></i>
-                                            <p>Evaluation</p>
-                                        </a>
-                                    </li>
-                                </ul> 
-                                 <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="{{ path('app_skill_index') }}" class="nav-link">
-                                            <i class="fas fa-chart-line nav-icon"></i>
-                                            <p>Compétence</p>
-                                        </a>
-                                    </li>
-                                </ul>     
+                                {% if is_granted('ROLE_RH') %}
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="{{ path('app_user_index') }}" class="nav-link">
+                                                <i class="far fa-circle nav-icon fa fa-users"></i>
+                                                <p>Compte</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="{{ path('app_contract_index') }}" class="nav-link">
+                                                <i class="fas fa-file-signature nav-icon"></i>
+                                                <p>Contrat</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="{{ path('app_mission_index') }}" class="nav-link">
+                                                <i class="fas fa-briefcase nav-icon"></i>
+                                                <p>Mission</p>
+                                            </a>
+                                        </li>
+                                    </ul> 
+                                {% endif %}
+                                {% if is_granted('ROLE_MANAGER') %}
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="{{ path('app_evaluation_index') }}" class="nav-link">
+                                                <i class="fas fa-check-circle nav-icon"></i>
+                                                <p>Evaluation</p>
+                                            </a>
+                                        </li>
+                                    </ul> 
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="{{ path('app_manager_leave_index') }}" class="nav-link">
+                                                <i class="fas fa-user-clock nav-icon"></i>
+                                                <p>Validation congé</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                {% endif %}
+                                {% if is_granted('ROLE_CONSULTANT') %}
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="{{ path('app_skill_index') }}" class="nav-link">
+                                                <i class="fas fa-chart-line nav-icon"></i>
+                                                <p>Compétence</p>
+                                            </a>
+                                        </li>
+                                    </ul> 
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="{{ path('app_leave_index') }}" class="nav-link">
+                                                <i class="fas fa-clock nav-icon"></i>
+                                                <p>Congée</p>
+                                            </a>
+                                        </li>
+                                    </ul> 
+                                {% endif %}
                             </li>
                         </ul>
                     </nav>

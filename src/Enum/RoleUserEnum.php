@@ -13,4 +13,5 @@ enum RoleUserEnum: string {
     case ROLE_ADMIN = "Administrateur";
     case ROLE_MANAGER = "Manager";
     case ROLE_RH = "Resource humaine";
+    case ROLE_CONSULTANT = "Consultant";
 }

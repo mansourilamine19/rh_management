@@ -1,0 +1,6 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    
+    {{ include('consultant/skill/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+    <a href="{{ path('app_skill_index') }}">Retour à la liste</a>
+{% endblock %}

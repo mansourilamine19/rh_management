@@ -33,21 +33,6 @@ class EvaluationType extends AbstractType
                     'required' => true,
                 ]
             ])
-            ->add('evaluateBy', EntityType::class, [
-                'class' => User::class,
-                'label' => 'Évalué par',
-                'query_builder' => function (EntityRepository $er): QueryBuilder {
-                    return $er->createQueryBuilder('u')
-                        ->orderBy('u.fullName', 'ASC');
-                },
-                'required' => true,
-                'placeholder' => '-----',
-                'empty_data' => null,
-                'attr' => [
-                    'class' => 'form-control select2',
-                    'required' => true,
-                ]
-            ])
             ->add('note', NumberType::class, [
                 'label' => 'Note',
                 'required' => true,
